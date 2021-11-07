@@ -65,17 +65,43 @@ if(isset($_POST['submit']))
        $elocation = $_POST['event_location'];
        
        
-       $sql= "INSERT INTO eventdetail(Event_Name,Event_Time,Event_Date,Event_Location)
-       VALUES('$ename','$etime','$edate','$elocation')";
+    //    $sql= "INSERT INTO eventdetail(Event_Name,Event_Time,Event_Date,Event_Location)
+    //    VALUES('$ename','$etime','$edate','$elocation')";
 
-       if(mysqli_query($con, $sql))
-       {
-           echo "record inserted successfully!";
-            header('Location: Admin.php');
+    //    if(mysqli_query($con, $sql))
+    //    {
+    //        echo "record inserted successfully!";
+    //         header('Location: Admin.php');
 
-       }
-       else {
-           echo "Error inserting records!".mysqli_connect_error();
-       }
+    //    }
+    //    else {
+    //        echo "Error inserting records!".mysqli_connect_error();
+    //    }
+       
+//Update
+    //   $sql= "select Event_Id from eventdetail where Event_Name = '$ename'";
+    //          $result= mysqli_query($con, $sql);
+    //          $rows=$result->fetch_assoc();
+    //          $id = $rows['Event_Id'];
+    //      echo "$id";
+    //          $query = "UPDATE eventdetail SET Event_Name = '$ename', Event_Time = '$etime', Event_Date= '$edate',Event_Location='$elocation' WHERE Event_Id = '$id'";
+    //              if($con->query($query)){
+    //                  echo "Recorded Updated!!";
+    //                  header('Location: Admin.php');
+    //              }
+    //              else
+    //              {
+    //                  echo "Error Updating records!".mysqli_connect_error();;
+    //              }
+
+    //Delete
+        // $sql = "DELETE From eventdetail where Event_Name = '$ename'";
+        // if ($con->query($sql)==TRUE){
+        //     echo "Record deleted successfully";
+        //     header('Location: Admin.php');
+        // }else{
+        //     echo "Error". $con->error;
+        // }
+      
       }
 ?>
