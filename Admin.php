@@ -24,24 +24,34 @@ include 'database.php';
             <td><input type="date" name="event_date"></td>
             <td><input type="time" name="event_time"></td>
             <td><input type="text" name="event_location"></td>
-            <button type="submit" class="signupbtn" name="submit">Submit</button>
         </tr>
     </table>
+    <button type="submit" class="signupbtn" name="submit">Submit</button>
     </form>
     <h1>Output</h1>
     <table border=1px;>
         <tr>
             <th>Event Name</th>
-            <th>Event Date</th>
             <th>Event Time</th>
+            <th>Event Date</th>
             <th>Event Location</th>
         </tr>
+        <?php
+$sql= "select * from eventdetail";
+$result= mysqli_query($con, $sql);
+//if ($result->num_rows>0){
+while ($rows=$result->fetch_assoc())
+{
+?>
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td><?php   echo $rows['Event_Name'] ?></td>
+            <td><?php   echo $rows['Event_Time']  ?></td>
+            <td><?php   echo $rows['Event_Date']?></td>
+            <td><?php   echo $rows['Event_Location']?></td>
         </tr>
+        <?php
+}
+?>
     </table>
 </body>
 </html>
@@ -49,20 +59,19 @@ include 'database.php';
 if(isset($_POST['submit']))
 {
 
-       $ename =$_POST['fname'];
-       $edate =$_POST['lname'];
-       $phone =$_POST['phone'];
-       $cnic =$_POST['cnic'];
-       $email=$_POST['email'];
-       $psw=$_POST['psw'];
+       $ename = $_POST['event_name'];
+       $edate = $_POST['event_date'];
+       $etime = $_POST['event_time'];
+       $elocation = $_POST['event_location'];
        
-       $sql= "INSERT INTO guest(Guest_FName,Guest_LName,Guest_email,Guest_phone,Guest_CNIC,Guest_Password)
-       VALUES('$fname','$lname','$email','$phone','$cnic','$psw')";
+       
+       $sql= "INSERT INTO eventdetail(Event_Name,Event_Time,Event_Date,Event_Location)
+       VALUES('$ename','$etime','$edate','$elocation')";
 
        if(mysqli_query($con, $sql))
        {
            echo "record inserted successfully!";
-           header('Location: SignUp.php');
+            header('Location: Admin.php');
 
        }
        else {

@@ -20,17 +20,16 @@ include 'database.php';
         </tr>
         <tr>
 <?php
-$sql= "select * from events";
+$sql= "select * from eventdetail";
 $result= mysqli_query($con, $sql);
 //if ($result->num_rows>0){
 while ($rows=$result->fetch_assoc())
 {
 ?>
-            <td><?php ?></td>
-            <td><?php ?></td>
-            <td><?php ?></td>
-            <td><?php ?></td>
-            <td><?php ?></td>
+           <td><?php   echo $rows['Event_Name'] ?></td>
+            <td><?php   echo $rows['Event_Time']  ?></td>
+            <td><?php   echo $rows['Event_Date']?></td>
+            <td><?php   echo $rows['Event_Location']?></td>
           
         </tr>
 <?php

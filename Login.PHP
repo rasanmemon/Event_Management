@@ -106,25 +106,51 @@ button:hover {
 </body>
 </html>
 <?php
+// if(isset($_POST['submit']))
+// {
+//   $result =  NULL;
+//   $username = $_POST["email"];
+//   $password = hash('sha512',$_POST["psw"]);
+//   $check_query = mysqli_prepare($con , "SELECT * from `guest` where `Guest_email` = ? AND `Guest_Password` = ? ");
+//   $check_query->bind_param('ss', $username , $password);
+//   $check_query->execute();
+//   $result = $check_query->get_result();
+//   if(mysqli_num_rows($result) > 0)
+//   {
+//     // header("Location: index.php");  Uncommit this to redirect to index page and remove below code.
+//     return true;
+//   }
+// }
+
+
 if(isset($_POST['submit']))
 {
+  $result =  NULL;
   $username = $_POST["email"];
-  $password = hash('sha512',$_POST["psw"]);
-  $check_query = mysqli_prepare($con , "SELECT * from `guest` where Guest_email = ?");
+  $check_query = mysqli_prepare($con , "SELECT * from `guest` where `Guest_email` = ? ");
   $check_query->bind_param('s', $username);
   $check_query->execute();
-  // $result = $check_query->get_result();
-  // foreach ($result as $row) {
-  //     echo $row['user_id'];
-  // }
-  if($check_query)
+  $result = $check_query->get_result();
+  if(mysqli_num_rows($result) > 0)
   {
-    echo '1';
-    // while($row = mysqli_fetch_array($check_query ))
-    // {
-    //   echo $row["Guest_email"];
-      
-    // }
+    foreach($result as $row)
+    {
+      $db_password = $row["Guest_Password"];
+      // if($db_password == hash('sha512',$_POST["psw"]))
+      if($db_password == $_POST["psw"])
+      {
+        echo "1";
+        // return true;
+      }else
+      {
+        echo "Incorrect Password";
+      }
+    }
+     header("Location: Guest.php");  //Uncommit this to redirect to index page and remove below code.
+    return true;
+  }else
+  {
+    echo "Email does not exist";
   }
 }
 ?>
