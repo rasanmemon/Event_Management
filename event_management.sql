@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 05, 2021 at 06:17 AM
+-- Generation Time: Nov 07, 2021 at 10:06 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.10
 
@@ -31,7 +31,7 @@ CREATE TABLE `accountant` (
   `Accountant_id` int(11) NOT NULL,
   `Total_Payment` int(11) NOT NULL,
   `Client_Profit` int(11) NOT NULL,
-  `Event_Event_id` int(11) NOT NULL
+  `Event_Id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -68,20 +68,28 @@ CREATE TABLE `client` (
 --
 
 CREATE TABLE `eventdetail` (
-  `Event_id` int(11) NOT NULL,
+  `Event_Id` int(11) NOT NULL,
   `Event_Name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `Event_Time` date NOT NULL,
+  `Event_Time` time NOT NULL,
   `Event_Date` date NOT NULL,
   `Event_Location` varchar(225) COLLATE utf8_unicode_ci NOT NULL,
-  `Audience` int(11) NOT NULL,
-  `Event_Budget` int(11) NOT NULL,
-  `Event_Ticket_Price` int(11) NOT NULL,
-  `Client_Client_id` int(11) NOT NULL,
-  `Sponser_Sponser_id` int(11) NOT NULL,
-  `Artist_Artist_id` int(11) NOT NULL,
-  `Volunteer_Volunteer_ID` int(11) NOT NULL,
-  `Guest_Id` int(11) NOT NULL
+  `Audience` int(11) DEFAULT NULL,
+  `Event_Budget` int(11) DEFAULT NULL,
+  `Event_Ticket_Price` int(11) DEFAULT NULL,
+  `Client_Client_id` int(11) DEFAULT NULL,
+  `Sponser_Sponser_id` int(11) DEFAULT NULL,
+  `Artist_Artist_id` int(11) DEFAULT NULL,
+  `Volunteer_Volunteer_ID` int(11) DEFAULT NULL,
+  `Guest_Id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `eventdetail`
+--
+
+INSERT INTO `eventdetail` (`Event_Id`, `Event_Name`, `Event_Time`, `Event_Date`, `Event_Location`, `Audience`, `Event_Budget`, `Event_Ticket_Price`, `Client_Client_id`, `Sponser_Sponser_id`, `Artist_Artist_id`, `Volunteer_Volunteer_ID`, `Guest_Id`) VALUES
+(2, 'birthday', '14:00:00', '2021-11-12', 'Sea View', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(3, 'birthday', '18:04:00', '2021-11-18', 'Sea View', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -144,7 +152,7 @@ CREATE TABLE `volunteer` (
 --
 ALTER TABLE `accountant`
   ADD PRIMARY KEY (`Accountant_id`),
-  ADD UNIQUE KEY `Accountant__IDX` (`Event_Event_id`);
+  ADD KEY `FK_Acc_Event` (`Event_Id`);
 
 --
 -- Indexes for table `artist`
@@ -162,12 +170,12 @@ ALTER TABLE `client`
 -- Indexes for table `eventdetail`
 --
 ALTER TABLE `eventdetail`
-  ADD PRIMARY KEY (`Event_id`),
-  ADD UNIQUE KEY `Event__IDX` (`Volunteer_Volunteer_ID`),
-  ADD KEY `Event_Artist_FK` (`Artist_Artist_id`),
+  ADD PRIMARY KEY (`Event_Id`),
+  ADD KEY `Event_Guest_FK` (`Guest_Id`),
   ADD KEY `Event_Client_FK` (`Client_Client_id`),
-  ADD KEY `Event_Sponser_FK` (`Sponser_Sponser_id`),
-  ADD KEY `Event_Guest_FK` (`Guest_Id`);
+  ADD KEY `Event_Artist_FK` (`Artist_Artist_id`),
+  ADD KEY `Event_Volunteer_FK` (`Volunteer_Volunteer_ID`),
+  ADD KEY `Event_Sponser_FK` (`Sponser_Sponser_id`);
 
 --
 -- Indexes for table `guest`
@@ -192,10 +200,46 @@ ALTER TABLE `volunteer`
 --
 
 --
+-- AUTO_INCREMENT for table `accountant`
+--
+ALTER TABLE `accountant`
+  MODIFY `Accountant_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `artist`
+--
+ALTER TABLE `artist`
+  MODIFY `Artist_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `client`
+--
+ALTER TABLE `client`
+  MODIFY `Client_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `eventdetail`
+--
+ALTER TABLE `eventdetail`
+  MODIFY `Event_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `guest`
 --
 ALTER TABLE `guest`
   MODIFY `Guest_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `sponser`
+--
+ALTER TABLE `sponser`
+  MODIFY `Sponser_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `volunteer`
+--
+ALTER TABLE `volunteer`
+  MODIFY `Volunteer_ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -205,7 +249,7 @@ ALTER TABLE `guest`
 -- Constraints for table `accountant`
 --
 ALTER TABLE `accountant`
-  ADD CONSTRAINT `Accountant_Event_FK` FOREIGN KEY (`Event_Event_id`) REFERENCES `eventdetail` (`Event_id`);
+  ADD CONSTRAINT `FK_Acc_Event` FOREIGN KEY (`Event_Id`) REFERENCES `eventdetail` (`Event_Id`);
 
 --
 -- Constraints for table `eventdetail`
